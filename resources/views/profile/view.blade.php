@@ -46,6 +46,36 @@
             </div>
         </div>
     </div>
+    <div class="mt-2 mb-2 mr-20 ml-20 bg-gray-300 shadow-lg rounded-lg overflow-hidden">
+
+        <div class="flex gap-x-2 gap-y-0 flex-wrap">
+            <div class="grow-[3] bg-white">1
+            </div>
+            <div class="grow bg-white ">
+                @foreach ($users as $user)
+                    <div class="p-4 border-b">
+                        <div class="flex items-center">
+                            <img class="w-12 h-12 rounded-full" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                            <div class="ml-4">
+                                <h4 class="text-lg font-semibold">{{ $user->name }}</h4>
+                            </div>
+                            <div class="ml-4 mt-2">
+                                <form action="{{ route('connections.send')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="target_user_id" value="{{ $user->id }}">
+                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                        <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                        + Connect
+                                        </span>
+                                        </button>
+                                </form>
+                            </div>
+                        </div>
+                    <div class="ml-auto">
+                @endforeach
+            </div>
+        </div>
+    </div>
      
 
 </x-app-layout>

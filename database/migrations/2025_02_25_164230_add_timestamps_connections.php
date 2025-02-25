@@ -17,6 +17,7 @@ return new class extends Migration
             $table->foreignId("target_user_id")->constrained("users");
             $table->enum("status", ["pending", "accepted", "rejected"]);
             $table->timestamp("request_date");
+            $table->timestamps();
         });
     }
 

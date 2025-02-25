@@ -94,6 +94,14 @@ class User extends Authenticatable
         return $this->hasMany(Connections::class);
     
     }
+    public function sentConnections()
+    {
+        return $this->hasMany(Connections::class, 'source_user_id');
+    }
+    public function receivedConnections()
+    {
+        return $this->hasMany(Connections::class, 'target_user_id');
+    }
     
    
 }

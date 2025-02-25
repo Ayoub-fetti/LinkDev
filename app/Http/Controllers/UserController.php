@@ -8,5 +8,5 @@ use App\Models\Skills;
 
 class UserController extends Controller
 {
- 
+  
 }
