@@ -31,6 +31,7 @@ class ProfileController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255',
             'profile_picture' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'cover' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $user = Auth::user();
@@ -41,6 +42,10 @@ class ProfileController extends Controller
         if ($request->hasFile('profile_picture')) {
             $profilePhotoPath = $request->file('profile_picture')->store('profile_pictures', 'public');
             $user->profile_picture = $profilePhotoPath;
+        }
+        if ($request->hasFile('cover')) {
+            $coverPhotoPath = $request->file('cover')->store('cover_pictures', 'public');
+            $user->cover = $coverPhotoPath;
         }
 
         $user->fill($request->validated());

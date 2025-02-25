@@ -35,7 +35,7 @@
             </main>
         </div>
         <script>
-            const quill = new Quill('#bio', {
+            const quill = new Quill('#editor', {
               theme: 'snow'
             });
           </script>

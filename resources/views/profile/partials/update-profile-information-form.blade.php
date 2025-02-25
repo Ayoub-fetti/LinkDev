@@ -16,6 +16,12 @@
     <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
+        <img src="{{ asset('storage/' . $user->cover) }}" alt="{{ $user->name }}" class="w-16 h-12 rounded-full">
+        <div>
+            <x-input-label for="cover" :value="__('Cover Photo')" />
+            <input id="cover" name="cover" type="file" class="mt-1 block w-full" />
+            <x-input-error class="mt-2" :messages="$errors->get('cover')" />
+        </div>
 
         <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="{{ $user->name }}" class="w-16 h-16 rounded-full">
         <div>
@@ -56,7 +62,6 @@
 
         <div>
             <x-input-label for="bio" :value="__('Bio')" />
-            
                 <textarea id="bio" name="bio" class="mt-1 block w-full" rows="3">{{ old('bio', $user->bio) }}</textarea>
                 <x-input-error class="mt-2" :messages="$errors->get('bio')" />
             
