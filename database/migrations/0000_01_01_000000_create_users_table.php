@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('profile_picture')->nullable();
             $table->string('cover')->nullable();
-            $table->string('bio')->nullable();
+            $table->text('bio')->nullable();
             $table->string('website')->nullable();
             $table->string('github_url')->nullable();
             $table->string('linkedin_url')->nullable();

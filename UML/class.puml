@@ -1,5 +1,4 @@
 @startuml linkdev
-@startuml support_tickets
 hide circle
 
 skinparam classAttributeIconSize 0
