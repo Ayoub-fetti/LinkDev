@@ -66,6 +66,50 @@
                 <x-input-error class="mt-2" :messages="$errors->get('bio')" />
             
         </div>
+        <div>
+            <x-input-label for="skills" :value="__(' Add skills')" />
+            <div class="flex flex-wrap mt-2">
+                @foreach($user->skills as $skill)
+                    <span class="bg-blue-100 text-blue-800 text-sm font-semibold mr-2 mb-2 px-4 py-2 rounded-full">{{ $skill->name }}</span>
+                @endforeach
+            </div>
+            <select id="skills" name="skills[]" class="mt-1 block w-full" multiple onchange="updateSelectedSkills()">
+                @foreach($skills as $skill)
+                    <option value="{{ $skill->id }}">{{ $skill->name }}</option>
+                @endforeach
+            </select>
+            <x-input-error class="mt-2" :messages="$errors->get('skills')" />
+        </div>
+        
+        <!-- Zone d'affichage des compétences sélectionnées -->
+        <div id="selectedSkillsContainer" class="mt-2 p-2 border rounded">
+            <div id="selectedSkills" class="mt-1 flex flex-wrap gap-2"></div>
+        </div>
+        <script>
+            function updateSelectedSkills() {
+                let select = document.getElementById('skills');
+                let selectedSkillsContainer = document.getElementById('selectedSkills');
+                
+                // Efface l'affichage précédent
+                selectedSkillsContainer.innerHTML = '';
+                
+                // Ajoute les compétences sélectionnées sous forme de badges
+                for (let option of select.selectedOptions) {
+                    let skillBadge = document.createElement('span');
+                    skillBadge.textContent = option.text;
+                    skillBadge.classList.add('px-2', 'py-1', 'bg-blue-500', 'text-white', 'rounded-lg', 'text-sm');
+                    selectedSkillsContainer.appendChild(skillBadge);
+                }
+            }
+        
+            // Initialiser l'affichage des compétences sélectionnées lors du chargement de la page
+            document.addEventListener('DOMContentLoaded', function() {
+                updateSelectedSkills();
+            });
+        </script>
+        
+
+        
 
         <div>
             <x-input-label for="website" :value="__('Website')" />
