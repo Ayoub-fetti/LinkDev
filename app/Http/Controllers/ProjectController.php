@@ -10,11 +10,7 @@ use Illuminate\Http\Request;
 
 class ProjectController extends Controller
 {
-    // public function index()
-    // {
-    //     $projects = Auth::user()->projects;
-    //     return view('profile.view', compact('projects'));
-    // }
+    
     public function create()
     {
         return view('profile.project.add');
@@ -29,4 +25,10 @@ class ProjectController extends Controller
         Auth::user()->projects()->create($request->all());
         return redirect()->route('profile.view')->with('success', 'Project created successfully');
     }
+    public function destroy(Project $projects) {
+            
+        $projects->delete();
+        return redirect()->route('profile.view')->with('success', 'Certification deleted successfully');
+    }
+  
 }

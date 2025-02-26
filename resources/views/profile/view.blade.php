@@ -62,6 +62,11 @@
                                     <p>{{ $project->description }}</p>
                                     <a href="{{ $project->repo_link }}" target="_blank" class="text-blue-500">Repository Link</a>
                                 </div>
+                                <form action="{{ route('projects.destroy', $project) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this certification?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"><i class="fas fa-trash-alt text-red-500"></i></button>
+                                </form>
                             @endforeach
                         </div>
                     </div>
@@ -107,7 +112,7 @@
         
     </div>
     <div class="mt-2 mb-2 mr-20 ml-20 bg-white shadow-lg rounded-lg overflow-hidden">
-        <!-- Projects Section -->
+        <!-- certifications Section -->
         <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="p-6">
                 <h3 class="text-xl font-bold mb-1">Certifications <span></span></h3>
@@ -120,6 +125,11 @@
                             <p>{{ $certification->description }}</p>
                             <a href="{{ $certification->certification_link }}" target="_blank" class="text-blue-500">Certification Link</a>
                         </div>
+                        <form action="{{ route('certifications.destroy', $certification->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this certification?');">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit"><i class="fas fa-trash-alt text-red-500"></i></button>
+                        </form>
                     @endforeach
                 </div>
             </div>

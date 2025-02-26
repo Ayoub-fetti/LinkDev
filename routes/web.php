@@ -30,9 +30,11 @@ Route::middleware('auth')->group(function () {
   
     Route::get('profile/projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::post('profile/projects', [ProjectController::class, 'store'])->name('projects.store');
-    
-    Route::get('profile/certifications/create', [CertificationController::class, 'create'])->name('certifications.create');
-    Route::post('profile/certifications', [CertificationController::class, 'store'])->name('certifications.store');
+    Route::delete('profile/{projects}', [ProjectController::class, 'destroy'])->name('projects.destroy');
+   
+
+    Route::resource('profile/certifications', CertificationController::class);
+
 });
 
 

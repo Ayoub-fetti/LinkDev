@@ -27,4 +27,10 @@ class CertificationController extends Controller
         Auth::user()->certifications()->create($request->all());
         return redirect()->route('profile.view')->with('success', 'Project created successfully');
     }
+      
+        public function destroy(Certifications $certification) {
+            
+            $certification->delete();
+            return redirect()->route('profile.view')->with('success', 'Certification deleted successfully');
+        }
 }
