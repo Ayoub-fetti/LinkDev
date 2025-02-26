@@ -60,22 +60,43 @@
                                 <h4 class="text-lg font-semibold">{{ $user->name }}</h4>
                             </div>
                             <div class="ml-4 mt-2">
-                                <form action="{{ route('connections.send')}}" method="post">
-                                    @csrf
-                                    <input type="hidden" name="target_user_id" value="{{ $user->id }}">
-                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                @php
+                                    $connectionStatus = auth()->user()->connectionStatus($user->id);
+                                @endphp
+                                @if($connectionStatus == 'pending')
+                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-yellow-500 to-orange-500 group-hover:from-yellow-500 group-hover:to-orange-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-yellow-200 dark:focus:ring-yellow-800" disabled>
                                         <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                                        + Connect
+                                        Pending
                                         </span>
+                                    </button>
+                                @elseif($connectionStatus == 'accepted')
+                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-500 to-teal-500 group-hover:from-green-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800" disabled>
+                                        <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                        Connected
+                                        </span>
+                                    </button>
+                                @else
+                                    <form action="{{ route('connections.send')}}" method="post">
+                                        @csrf
+                                        <input type="hidden" name="target_user_id" value="{{ $user->id }}">
+                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
+                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                            + Connect
+                                            </span>
                                         </button>
-                                </form>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     <div class="ml-auto">
                 @endforeach
             </div>
+            <div>
+            </div>
         </div>
     </div>
+    
+   
      
 
 </x-app-layout>

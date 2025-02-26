@@ -35,6 +35,27 @@
                 {{ $slot }}
             </main>
         </div>
-
+        <script>
+            function updateSelectedSkills() {
+                let select = document.getElementById('skills');
+                let selectedSkillsContainer = document.getElementById('selectedSkills');
+                
+                // Efface l'affichage précédent
+                selectedSkillsContainer.innerHTML = '';
+                
+                // Ajoute les compétences sélectionnées sous forme de badges
+                for (let option of select.selectedOptions) {
+                    let skillBadge = document.createElement('span');
+                    skillBadge.textContent = option.text;
+                    skillBadge.classList.add('px-2', 'py-1', 'bg-blue-500', 'text-white', 'rounded-lg', 'text-sm');
+                    selectedSkillsContainer.appendChild(skillBadge);
+                }
+            }
+        
+            // Initialiser l'affichage des compétences sélectionnées lors du chargement de la page
+            document.addEventListener('DOMContentLoaded', function() {
+                updateSelectedSkills();
+            });
+        </script>
     </body>
 </html>

@@ -102,6 +102,19 @@ class User extends Authenticatable
     {
         return $this->hasMany(Connections::class, 'target_user_id');
     }
+
+    public function connectionStatus($targetUserId)
+{
+    $connection = Connections::where(function ($query) use ($targetUserId) {
+        $query->where('source_user_id', $this->id)
+              ->where('target_user_id', $targetUserId);
+    })->orWhere(function ($query) use ($targetUserId) {
+        $query->where('source_user_id', $targetUserId)
+              ->where('target_user_id', $this->id);
+    })->first();
+
+    return $connection ? $connection->status : null;
+}
     
    
 }

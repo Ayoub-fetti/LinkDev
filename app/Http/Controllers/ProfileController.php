@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Skills;
 use App\Models\User;
+use App\Models\Connections;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -17,9 +18,19 @@ class ProfileController extends Controller
     public function view()
     {
         $user = Auth::user();
+        $sent_connections = $user->sentConnections->get('target_user_id');
+        $received_connections = $user->receivedConnections->get('source_user_id');
         $users = User::where('id', '!=', Auth::id())->get();
-        return view('profile.view', compact('user','users'));
+        return view('profile.view', compact('user','users','sent_connections','received_connections'));
 
+    }
+    public function notification()
+    {
+        $user = Auth::user();
+        $receivedConnections = Connections::where('target_user_id', Auth::id())
+        ->where('status', 'pending')
+       ->get();
+        return view('notification',compact('receivedConnections','user'));
     }
     public function edit(Request $request): View
     {
