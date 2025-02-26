@@ -10,13 +10,14 @@ use App\Models\Shares;
 use App\Models\Job_offers;
 use App\Models\Hashtags;
 use App\Models\Connections;
+use App\Models\Project;
+use App\Models\Certifications;
 
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-use SebastianBergmann\CodeCoverage\Report\Xml\Project;
 
 class User extends Authenticatable
 {
@@ -64,9 +65,14 @@ class User extends Authenticatable
     {
         return $this->hasMany(Likes::class);
     }
-    public function project()
+    public function projects()
     {
         return $this->hasMany(Project::class);
+    
+    }
+    public function certifications()
+    {
+        return $this->hasMany(Certifications::class);
     
     }
     public function notifications()

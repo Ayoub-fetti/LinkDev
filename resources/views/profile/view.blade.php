@@ -48,50 +48,80 @@
     </div>
     <div class="mt-2 mb-2 mr-20 ml-20 bg-gray-300 shadow-lg rounded-lg overflow-hidden">
 
-        <div class="flex gap-x-2 gap-y-0 flex-wrap">
-            <div class="grow-[3] bg-white">1
-            </div>
-            <div class="grow bg-white ">
-                @foreach ($users as $user)
-                    <div class="p-4 border-b">
-                        <div class="flex items-center">
-                            <img class="w-12 h-12 rounded-full" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
-                            <div class="ml-4">
-                                <h4 class="text-lg font-semibold">{{ $user->name }}</h4>
-                            </div>
-                            <div class="ml-4 mt-2">
-                                @php
-                                    $connectionStatus = auth()->user()->connectionStatus($user->id);
-                                @endphp
-                                @if($connectionStatus == 'pending')
-                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-yellow-500 to-orange-500 group-hover:from-yellow-500 group-hover:to-orange-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-yellow-200 dark:focus:ring-yellow-800" disabled>
-                                        <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                                        Pending
-                                        </span>
-                                    </button>
-                                @elseif($connectionStatus == 'accepted')
-                                    <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-500 to-teal-500 group-hover:from-green-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800" disabled>
-                                        <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                                        Connected
-                                        </span>
-                                    </button>
-                                @else
-                                    <form action="{{ route('connections.send')}}" method="post">
-                                        @csrf
-                                        <input type="hidden" name="target_user_id" value="{{ $user->id }}">
-                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-cyan-500 to-blue-500 group-hover:from-cyan-500 group-hover:to-blue-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-cyan-200 dark:focus:ring-cyan-800">
-                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
-                                            + Connect
-                                            </span>
-                                        </button>
-                                    </form>
-                                @endif
-                            </div>
+        <div class="flex gap-x-4">
+            <div class="w-2/3 bg-white p-4">
+                <!-- Projects Section -->
+                <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold mb-1">Projects <span></span></h3>
+                        <a href="{{ route('projects.create') }}" class=" text-green-500 rounded-lg hover:text-green-600 font-bold">Add Project</a>
+                        <div class="mt-2">
+                            @foreach($projects as $project)
+                                <div class="mb-4">
+                                    <h4 class="text-lg font-semibold">{{ $project->title }}</h4>
+                                    <p>{{ $project->description }}</p>
+                                    <a href="{{ $project->repo_link }}" target="_blank" class="text-blue-500">Repository Link</a>
+                                </div>
+                            @endforeach
                         </div>
-                    <div class="ml-auto">
+                    </div>
+                </div>
+            </div>
+        
+            <div class="w-1/3 bg-white p-4">
+                @foreach ($users as $user)
+                    <div class="p-4 border-b flex items-center">
+                        <img class="w-12 h-12 rounded-full" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                        <div class="ml-4">
+                            <h4 class="text-lg font-semibold">{{ $user->name }}</h4>
+                        </div>
+                        <div class="ml-auto">
+                            @php
+                                $connectionStatus = auth()->user()->connectionStatus($user->id);
+                            @endphp
+                            @if($connectionStatus == 'pending')
+                            <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-yellow-500 to-orange-500 group-hover:from-yellow-500 group-hover:to-orange-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-yellow-200 dark:focus:ring-yellow-800" disabled>
+                                <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                Pending
+                                </span>
+                            </button>
+                            @elseif($connectionStatus == 'accepted')
+                            <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-500 to-teal-500 group-hover:from-green-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800" disabled>
+                                <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                Connected
+                                </span>
+                            </button>
+                            @else
+                                <form action="{{ route('connections.send')}}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="target_user_id" value="{{ $user->id }}">
+                                    <button class="bg-blue-500 text-white px-4 py-1 rounded-lg">+ Connect</button>
+                                </form>
+                            @endif
+                        </div>
+                    </div>
                 @endforeach
             </div>
-            <div>
+        </div>
+
+        
+    </div>
+    <div class="mt-2 mb-2 mr-20 ml-20 bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Projects Section -->
+        <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-xl font-bold mb-1">Certifications <span></span></h3>
+                <a href="{{ route('certifications.create') }}" class=" text-green-500 rounded-lg hover:text-green-600 font-bold">Add Certifications</a>
+                <div class="mt-2">
+                    @foreach($certifications as $certification)
+                        <div class="mb-4">
+                            <h4 class="text-lg font-semibold">{{ $certification->title }}</h4>
+                            <p class="text-gray-500 text-xs">{{$certification->certification_date}}</p>
+                            <p>{{ $certification->description }}</p>
+                            <a href="{{ $certification->certification_link }}" target="_blank" class="text-blue-500">Certification Link</a>
+                        </div>
+                    @endforeach
+                </div>
             </div>
         </div>
     </div>

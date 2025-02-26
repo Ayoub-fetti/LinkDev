@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ProfileUpdateRequest;
 use App\Models\Skills;
 use App\Models\User;
+use App\Models\Project;
 use App\Models\Connections;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -21,7 +22,9 @@ class ProfileController extends Controller
         $sent_connections = $user->sentConnections->get('target_user_id');
         $received_connections = $user->receivedConnections->get('source_user_id');
         $users = User::where('id', '!=', Auth::id())->get();
-        return view('profile.view', compact('user','users','sent_connections','received_connections'));
+        $projects = Auth::user()->projects;
+        $certifications = Auth::user()->certifications;
+        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications'));
 
     }
     public function notification()

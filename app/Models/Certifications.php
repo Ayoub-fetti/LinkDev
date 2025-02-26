@@ -5,10 +5,10 @@ use App\Models\User;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Project extends Model
+class Certifications extends Model
 {
     protected $fillable = [
-        'title', 'description', 'repo_link',
+        'title', 'description', 'certification_date','certification_link',
     ];
     public function user()
     {
