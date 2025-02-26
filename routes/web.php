@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Connections;
 use Illuminate\Support\Facades\Route;
@@ -31,10 +32,12 @@ Route::middleware('auth')->group(function () {
     Route::get('profile/projects/create', [ProjectController::class, 'create'])->name('projects.create');
     Route::post('profile/projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::delete('profile/{projects}', [ProjectController::class, 'destroy'])->name('projects.destroy');
-   
 
+    
+    
     Route::resource('profile/certifications', CertificationController::class);
-
+    Route::resource('posts/posts', PostController::class);
+    
 });
 
 

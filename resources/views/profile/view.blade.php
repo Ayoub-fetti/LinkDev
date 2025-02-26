@@ -135,6 +135,60 @@
             </div>
         </div>
     </div>
+    <div class="mt-2 mb-2 mr-20 ml-20 bg-white shadow-lg rounded-lg overflow-hidden">
+        <!--posts Section -->
+        <div class="mt-4 mb-4  bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-xl font-bold mb-4">Mes Posts</h3>
+                <a href="{{ route('posts.create') }}" class="text-green-500 hover:text-green-600 font-bold">➕ Ajouter un Post</a>
+                
+                <div class="mt-4 space-y-6  w-[26rem] ">
+                    @foreach($posts as $post)
+                        <div class="bg-white p-4 rounded-lg shadow-md">
+                            <!-- Header du post -->
+                            <div class="flex items-center mb-2">
+                                <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <h4 class="text-lg font-semibold">{{ $post->user->name }}</h4>
+                                    <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
+                                </div>
+                            </div>
+                            
+                            <!-- Contenu du post -->
+                            <p class="text-gray-800">{{ $post->content }}</p>
+                            
+                            @if($post->image)
+                                <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="w-80  h-auto mt-2 rounded-lg">
+                            @endif
+        
+                            <!-- Boutons d'interaction -->
+                            <divxx class="flex items-center justify-between mt-3 text-gray-600">
+                                <button class="flex items-center hover:text-blue-600">
+                                    <i class="far fa-heart mr-1"></i>Like
+                                </button>
+                                <button class="flex items-center hover:text-blue-600">
+                                    <i class="far fa-comment mr-1"></i> Comment
+                                </button>
+                                <button class="flex items-center hover:text-blue-600">
+                                    <i class="fas fa-share mr-1"></i> Share
+                                </button>
+                                
+                                <!-- Bouton de suppression -->
+                                <form method="POST" action="{{route('posts.destroy', $post->id)}}" onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="flex items-center text-red-500 hover:text-red-600">
+                                        <i class="far fa-minus-square mr-1"></i>  Supprimer
+                                    </button>
+                                </form>
+                            </divxx>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+        
+    </div>
     
    
      

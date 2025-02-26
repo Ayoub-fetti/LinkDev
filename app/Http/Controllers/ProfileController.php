@@ -24,7 +24,8 @@ class ProfileController extends Controller
         $users = User::where('id', '!=', Auth::id())->get();
         $projects = Auth::user()->projects;
         $certifications = Auth::user()->certifications;
-        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications'));
+        $posts = Auth::user()->posts;
+        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications','posts'));
 
     }
     public function notification()

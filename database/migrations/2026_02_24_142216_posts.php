@@ -13,17 +13,15 @@ return new class extends Migration {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->text('content');
-            $table->string('image_url')->nullable();
+            $table->text('title');
+            $table->string('image')->nullable();
+            $table->string('content')->nullable();
             $table->text('code_snippet')->nullable();
-            $table->timestamp('published_date');
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
+
     public function down(): void
     {
         Schema::dropIfExists('posts');
