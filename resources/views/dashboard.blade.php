@@ -26,7 +26,7 @@
                                 <i class="far fa-heart text-red-500 mr-1"></i>Like
                             </button>
                             <button onclick="toggleCommentSection({{ $post->id }})" class="flex items-center hover:text-blue-600">
-                                <i class="far fa-comment text-blue-500 mr-1"></i> Comment
+                                <i class="far fa-comment text-blue-500 mr-1"></i> Comment <span class="ml-2" id="comment-count-{{ $post->id}}">({{$post->comments->count()}})</span>
                             </button>
                             <button class="flex items-center hover:text-green-500">
                                 <i class="fas fa-share text-green-500 mr-1"></i> Share
@@ -57,6 +57,13 @@
                                             <p class="text-xs text-gray-600">{{ $comment->content }}</p>
                                             <p class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
                                         </div>
+                                        @if($comment->user_id == Auth::id())
+                                        <form action="{{ route('comments.destroy', $comment->id) }}" method="POST" style="display:inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit"><i class="far fa-trash-alt text-red-500 ml-12"></i></button>
+                                        </form>
+                                    @endif
                                     </div>
                                 @endforeach
                             </div>

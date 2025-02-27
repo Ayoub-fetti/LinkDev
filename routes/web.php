@@ -37,8 +37,9 @@ Route::middleware('auth')->group(function () {
     Route::post('profile/projects', [ProjectController::class, 'store'])->name('projects.store');
     Route::delete('profile/{projects}', [ProjectController::class, 'destroy'])->name('projects.destroy');
     
-    // Comment Routes
+    
     Route::post('/posts/{postId}/comments', [CommentController::class, 'store'])->name('comments.store');
+    Route::delete('/posts/{commentId}', [CommentController::class, 'destroy'])->name('comments.destroy');
     
     Route::resource('profile/certifications', CertificationController::class);
     Route::resource('posts/posts', PostController::class);
