@@ -66,5 +66,12 @@
                 updateSelectedSkills();
             });
         </script>
+        <script>
+            // Function to toggle comment section
+            function toggleCommentSection(postId) {
+                const commentSection = document.getElementById(`comment-section-${postId}`);
+                commentSection.classList.toggle('hidden');
+            }
+        </script>
     </body>
 </html>

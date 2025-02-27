@@ -25,7 +25,7 @@
                             <button class="flex items-center hover:text-red-600">
                                 <i class="far fa-heart text-red-500 mr-1"></i>Like
                             </button>
-                            <button class="flex items-center hover:text-blue-600">
+                            <button onclick="toggleCommentSection({{ $post->id }})" class="flex items-center hover:text-blue-600">
                                 <i class="far fa-comment text-blue-500 mr-1"></i> Comment
                             </button>
                             <button class="flex items-center hover:text-green-500">
@@ -43,6 +43,30 @@
                                     </button>
                                 </form>
                             @endif
+                        </div>
+                        
+                        <!-- Comment Section -->
+                        <div id="comment-section-{{ $post->id }}" class="hidden mt-4 border-t pt-4">
+                            <!-- Scrollable Comments Container -->
+                            <div class="max-h-40 overflow-y-auto mb-4">
+                                @foreach($post->comments as $comment)
+                                    <div class="flex items-start mb-2">
+                                        <img src="{{ asset('storage/' . $comment->user->profile_picture) }}" alt="Avatar" class="w-8 h-8 rounded-full mr-2">
+                                        <div>
+                                            <p class="text-sm font-semibold">{{ $comment->user->name }}</p>
+                                            <p class="text-xs text-gray-600">{{ $comment->content }}</p>
+                                            <p class="text-xs text-gray-400">{{ $comment->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                            
+                            <!-- Comment Input Form -->
+                            <form action="{{ route('comments.store', $post->id) }}" method="POST" class="flex">
+                                @csrf
+                                <input type="text" name="content" placeholder="Write a comment..." class="flex-grow p-2 border rounded-l-lg text-sm">
+                                <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r-lg text-sm">Send</button>
+                            </form>
                         </div>
                     </div>
                 @endforeach

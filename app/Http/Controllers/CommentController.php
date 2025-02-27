@@ -15,12 +15,15 @@ class CommentController extends Controller
             'content' => 'required|string|max:255',
         ]);
 
+        $post = Posts::findOrFail($postId);
+
         $comment = new Comments();
         $comment->user_id = Auth::id();
-        $comment->post_id = $postId;
+        $comment->post_id = $postId; 
         $comment->content = $request->input('content');
+        $comment->date_commentaire = now();
         $comment->save();
 
-        return redirect()->route('posts.show', $postId)->with('success', 'Comment added successfully.');
+        return redirect()->back()->with('success', 'Comment added successfully.');
     }
 }
