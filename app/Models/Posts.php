@@ -21,4 +21,8 @@ class Posts extends Model
     {
     return $this->belongsToMany(Hashtags::class, 'post_hashtags', 'post_id', 'hashtag_id');
     }
+    public function comments()
+    {
+        return $this->hasMany(Comments::class);
+    }
 }

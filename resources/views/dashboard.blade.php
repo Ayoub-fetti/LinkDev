@@ -1,7 +1,6 @@
 <x-app-layout>
     <div class="container mx-auto mt-10 flex justify-center">
         <div class="w-full max-w-xl">
-            <!-- resources/views/livewire/search-posts.blade.php -->
             <div>
                 <input type="text" wire:model="search" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
                 @foreach($posts as $post)

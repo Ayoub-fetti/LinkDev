@@ -5,6 +5,7 @@ use Livewire\Livewire;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CertificationController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Models\Connections;
