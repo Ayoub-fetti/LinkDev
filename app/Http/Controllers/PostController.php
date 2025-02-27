@@ -12,7 +12,7 @@ class PostController extends Controller
     
     public function index()
     {
-        $posts = Posts::all();
+        
         return view('dashboard',compact('posts')); 
     }
 
@@ -121,4 +121,6 @@ public function update(Request $request, $id)
         Posts::where('id', $id)->delete();
         return redirect()->route('profile.view')->with('success', 'post deleted successfully');
     }
+   
+    
 }

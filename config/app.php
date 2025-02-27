@@ -123,4 +123,14 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    // 'providers' => [
+    //     // Laravel Framework Service Providers...
+    //     Illuminate\Auth\AuthServiceProvider::class,
+    //     Illuminate\Broadcasting\BroadcastServiceProvider::class,
+    //     // ... other existing providers ...
+
+    //     // Add Livewire Service Provider
+    //     Livewire\LivewireServiceProvider::class,
+    // ],
+
 ];

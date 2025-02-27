@@ -16,7 +16,8 @@ class ConnectionController extends Controller
         $receivedConnections = Connections::where('target_user_id', Auth::id())
          ->where('status', 'pending')
         ->get();
-        $posts = Posts::all();
+        
+        $posts = Posts::paginate(5);
 
 
         return view('dashboard', compact('receivedConnections','posts'));

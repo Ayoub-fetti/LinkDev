@@ -14,6 +14,10 @@
         <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
         <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
 
+  
+   
+        @livewireStyles
+
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
@@ -33,8 +37,13 @@
             <!-- Page Content -->
             <main>
                 {{ $slot }}
+                <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
             </main>
         </div>
+
+        <!-- Livewire Scripts -->
+        @livewireScripts
+
         <script>
             function updateSelectedSkills() {
                 let select = document.getElementById('skills');

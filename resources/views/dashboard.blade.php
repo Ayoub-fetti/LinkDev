@@ -1,10 +1,11 @@
 <x-app-layout>
     <div class="container mx-auto mt-10 flex justify-center">
-        <div class="w-full max-w-xl"> <!-- Réduction de la largeur -->
-            @foreach($posts as $post)
-                <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6">
-                    <!-- Header du post -->
-                    <div>
+        <div class="w-full max-w-xl">
+            <!-- resources/views/livewire/search-posts.blade.php -->
+            <div>
+                <input type="text" wire:model="search" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
+                @foreach($posts as $post)
+                    <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6">
                         <div class="flex items-center mb-2">
                             <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
                             <div>
@@ -12,8 +13,7 @@
                                 <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <!-- Contenu du post -->
-                        <p class="text-gray-800 text-sm">{{ $post->content }}</p> <!-- Texte légèrement plus petit -->
+                        <p class="text-gray-800 text-sm">{{ $post->content }}</p>
                         <p class="text-blue-800 text-xs">
                             @foreach($post->hashtags as $hashtag)
                                 {{ $hashtag->name }}
@@ -22,34 +22,36 @@
                         @if($post->image)
                             <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="w-full h-auto mt-2 rounded-lg">
                         @endif
-                    </div>
-                    <!-- Boutons d'interaction -->
-                    <div class="flex items-center justify-between mt-3 text-gray-600 text-sm">
-                        <button class="flex items-center hover:text-red-600">
-                            <i class="far fa-heart text-red-500 mr-1"></i>Like
-                        </button>
-                        <button class="flex items-center hover:text-blue-600">
-                            <i class="far fa-comment text-blue-500 mr-1"></i> Comment
-                        </button>
-                        <button class="flex items-center hover:text-green-500">
-                            <i class="fas fa-share text-green-500 mr-1"></i> Share
-                        </button>
-                        @if (Auth::id() === $post->user_id)
-                        <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center hover:text-orange-500">
-                            <i class="fas fa-pen text-orange-500 mr-1"></i> Edit
-                        </a>
-                        <!-- Bouton de suppression -->
-                        <form method="POST" action="{{ route('posts.destroy', $post->id) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="flex items-center hover:text-red-600">
-                                <i class="far fa-minus-square text-red-500 mr-1"></i> Supprimer
+                        <div class="flex items-center justify-between mt-3 text-gray-600 text-sm">
+                            <button class="flex items-center hover:text-red-600">
+                                <i class="far fa-heart text-red-500 mr-1"></i>Like
                             </button>
-                        </form>
-                        @endif
+                            <button class="flex items-center hover:text-blue-600">
+                                <i class="far fa-comment text-blue-500 mr-1"></i> Comment
+                            </button>
+                            <button class="flex items-center hover:text-green-500">
+                                <i class="fas fa-share text-green-500 mr-1"></i> Share
+                            </button>
+                            @if (Auth::id() === $post->user_id)
+                                <a href="{{ route('posts.edit', $post->id) }}" class="flex items-center hover:text-orange-500">
+                                    <i class="fas fa-pen text-orange-500 mr-1"></i> Edit
+                                </a>
+                                <form method="POST" action="{{ route('posts.destroy', $post->id) }}" onsubmit="return confirm('Voulez-vous vraiment supprimer ce post ?');">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="flex items-center hover:text-red-600">
+                                        <i class="far fa-minus-square text-red-500 mr-1"></i> Supprimer
+                                    </button>
+                                </form>
+                            @endif
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
+            </div>
+            <!-- Add pagination links -->
+            <div class="mt-4">
+                {{ $posts->links() }}
+            </div>
         </div>
     </div>
 </x-app-layout>

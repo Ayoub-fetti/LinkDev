@@ -150,7 +150,7 @@
                             <!-- Header du post -->
                             <div>
                                 <div class="flex items-center mb-2">
-                                    <img src="{{ asset('storage/' . $user->profile_picture) }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
+                                    <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
                                     <div>
                                         <h4 class="text-lg font-semibold">{{ $post->user->name }}</h4>
                                         <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
