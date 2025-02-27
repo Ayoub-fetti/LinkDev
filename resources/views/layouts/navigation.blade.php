@@ -23,7 +23,7 @@
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('my.notification')" :active="request()->routeIs('my.notification')">
-                        {{ __('Notifications') }}
+                        {{ __('Notifications') }}<i class="fas fa-bell text-red-500 ml-2"></i>
                     </x-nav-link>
                 </div>
             </div>

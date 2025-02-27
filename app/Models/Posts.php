@@ -17,4 +17,8 @@ class Posts extends Model
     {
         return $this->belongsTo(User::class);
     }
+    public function hashtags()
+    {
+    return $this->belongsToMany(Hashtags::class, 'post_hashtags', 'post_id', 'hashtag_id');
+    }
 }

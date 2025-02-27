@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Connections;
+use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -15,8 +16,10 @@ class ConnectionController extends Controller
         $receivedConnections = Connections::where('target_user_id', Auth::id())
          ->where('status', 'pending')
         ->get();
+        $posts = Posts::all();
 
-        return view('dashboard', compact('receivedConnections'));
+
+        return view('dashboard', compact('receivedConnections','posts'));
     }
     public function sendRequest(Request $request)
     {

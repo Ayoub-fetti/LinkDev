@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('postts', function (Blueprint $table) {
-            $table->id();
+        Schema::table('hashtags', function (Blueprint $table) {
             $table->timestamps();
         });
     }
@@ -22,6 +21,8 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('postts');
+        Schema::table('hashtags', function (Blueprint $table) {
+            $table->dropTimestamps();
+        });
     }
 };
