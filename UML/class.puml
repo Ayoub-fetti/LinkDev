@@ -1,5 +1,4 @@
 @startuml linkdev
-@startuml support_tickets
 hide circle
 
 skinparam classAttributeIconSize 0
@@ -11,10 +10,10 @@ skinparam class {
 
 
 class Utilisateur {
-  +id: int
-  +nom: string
-  +email: string
-  +motDePasse: string
+  -id: int
+  -nom: string
+  -email: string
+  -motDePasse: string
   +register()
   +login()
   +ajouterConnexion(Utilisateur)
