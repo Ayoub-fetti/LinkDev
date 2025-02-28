@@ -34,7 +34,8 @@ class ProfileController extends Controller
         $receivedConnections = Connections::where('target_user_id', Auth::id())
         ->where('status', 'pending')
        ->get();
-        return view('notification',compact('receivedConnections','user'));
+        $notifications = $user->notifications;
+        return view('notification',compact('receivedConnections','notifications','user'));
     }
 
     public function edit(Request $request): View

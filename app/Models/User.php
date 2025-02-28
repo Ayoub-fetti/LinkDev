@@ -5,7 +5,6 @@ use App\Models\Posts;
 use App\Models\Skills;
 use App\Models\Comments;
 use App\Models\Likes;
-use App\Models\Notifications;
 use App\Models\Shares;
 use App\Models\Job_offers;
 use App\Models\Hashtags;
@@ -75,11 +74,7 @@ class User extends Authenticatable
         return $this->hasMany(Certifications::class);
     
     }
-    public function notifications()
-    {
-        return $this->hasMany(Notifications::class);
-    
-    }
+
     public function shares()
     {
         return $this->hasMany(Shares::class);

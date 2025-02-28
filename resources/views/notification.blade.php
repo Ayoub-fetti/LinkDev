@@ -24,6 +24,15 @@
             @empty
                 <p class="text-gray-500 text-center">No new connection requests.</p>
             @endforelse
+            @foreach ($notifications as $notification)
+                <div class="border-b pb-4 mb-4">
+                    @if($notification->type === 'App\Notifications\PostLiked')
+                        <p class="text-gray-800"><span class="font-semibold">{{ $notification->data['message'] }}</span> on your post.</p>
+                    @else
+                        <p class="text-gray-800">{{ $notification->data['message'] }}</p>
+                    @endif
+                </div>
+            @endforeach
         </div>
     </div>
 </x-app-layout>
