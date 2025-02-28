@@ -44,10 +44,6 @@ Route::middleware('auth')->group(function () {
     Route::resource('profile/certifications', CertificationController::class);
     Route::resource('posts/posts', PostController::class);
     
-    // Route::resource('posts/likes',likeController::class);
-    // Route::post('/posts/{postId}/like', [likeController::class, 'toggleLike'])->name('posts.like');
-    // Route::get('/posts/{postId}/check-like', [likeController::class, 'checkLike'])->name('posts.like');
-
     Route::post('/posts/{post}/like', [likeController::class, 'toggleLike'])->name('posts.like');
     Route::get('/posts/{post}/check-like', [likeController::class, 'checkLike'])->name('posts.checkLike');
     
