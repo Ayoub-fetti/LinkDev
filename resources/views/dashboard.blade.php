@@ -21,12 +21,19 @@
                         @if($post->image)
                             <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="w-full h-auto mt-2 rounded-lg">
                         @endif
-                        <div class="flex items-center justify-between mt-3 text-gray-600 text-sm">
-                            <button class="flex items-center hover:text-red-600">
-                                <i class="far fa-heart text-red-500 mr-1"></i>Like
+                        <div class="flex items-center justify-between mt-3 text-gray-600 text-sm " >
+                            {{-- <form method="POST" action="{{ route('posts.like', $post->id) }}" class="like-form">
+                                @csrf
+                                <button type="submit" class="flex items-center hover:text-red-600 like-button" data-post-id="{{$post->id}}">
+                                    <i class="far fa-heart text-red-500 mr-1"></i>Like <span class="ml-2 likes-count" id="like-count-{{ $post->id}}">({{ $post->likes->count() }})</span>
+                                </button>
+                            </form> --}}
+                            <button onclick="toggleLike({{}})" class="flex items-center hover:text-red-600 like-button" data-post-id="{{$post->id}}">
+                                <i class="far fa-heart text-red-500 mr-1"></i>Like <span class="ml-2 likes-count" id="like-count-{{ $post->id}}">({{ $post->likes->count() }})</span>
                             </button>
+
                             <button onclick="toggleCommentSection({{ $post->id }})" class="flex items-center hover:text-blue-600">
-                                <i class="far fa-comment text-blue-500 mr-1"></i> Comment <span class="ml-2" id="comment-count-{{ $post->id}}">({{$post->comments->count()}})</span>
+                                <i class="far fa-comment text-blue-500 mr-1"></i> Comment <span class="ml-2" id="comment-count-{{ $post->id}}">({{ $post->comments->count() }})</span>
                             </button>
                             <button class="flex items-center hover:text-green-500">
                                 <i class="fas fa-share text-green-500 mr-1"></i> Share
@@ -84,4 +91,104 @@
             </div>
         </div>
     </div>
+
+    {{-- <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.like-form').forEach(form => {
+                form.addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const formData = new FormData(this);
+                    const action = this.action;
+                    const likeCountSpan = this.querySelector('span[id^="like-count-"]');
+                    const likeButton = this.querySelector('button');
+
+                    fetch(action, {
+                        method: 'POST',
+                        body: formData,
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        }
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === 200) {
+                            const currentCount = parseInt(likeCountSpan.textContent.match(/\d+/)[0]);
+                            if (data.message === 'Like removed successfully.') {
+                                likeCountSpan.textContent = `(${currentCount - 1})`;
+                                likeButton.innerHTML = '<i class="far fa-heart text-red-500 mr-1"></i>Like';
+                            } else {
+                                likeCountSpan.textContent = `(${currentCount + 1})`;
+                                likeButton.innerHTML = '<i class="fas fa-heart text-red-500 mr-1"></i>Unlike';
+                            }
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+                });
+            });
+        });
+
+
+    </script> --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('.like-button').forEach(button => {
+                const postId = button.dataset.postId;
+                checkLikeStatus(postId);
+            });
+        });
+        async function toggleLike(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                        'Accept': 'application/json'
+                    }
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+                    // const icon = button.querySelector('.like-icon');
+                    const count = button.querySelector('.likes-count');
+                    
+                    // Update like count
+                    count.textContent = data.likesCount;
+                    
+                    // Update icon state
+                    // if (data.isLiked) {
+                    //     icon.style.fill = 'currentColor';
+                    // } else {
+                    //     icon.style.fill = 'none';
+                    // }
+                }
+            } catch (error) {
+                console.error('Error toggling like:', error);
+            }
+        }
+        async function checkLikeStatus(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/check-like`, {
+                    method: 'GET'
+                });
+                const data = await response.json();
+                
+                const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+                // const icon = button.querySelector('.like-icon');
+                
+                if (data.isLiked) {
+                    // icon.style.fill = 'currentColor';
+                }
+            } catch (error) {
+                console.error('Error checking like status:', error);
+            }
+        }
+    </script>
+    <script>
+                function toggleCommentSection(postId) {
+            const commentSection = document.getElementById(`comment-section-${postId}`);
+            commentSection.classList.toggle('hidden');
+        }
+    </script>
 </x-app-layout>

@@ -1,13 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Livewire\Livewire;
 use App\Http\Controllers\ConnectionController;
 use App\Http\Controllers\ProjectController;
 use App\Http\Controllers\CertificationController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\likeController;
 use App\Models\Connections;
 use Illuminate\Support\Facades\Route;
 
@@ -43,6 +43,13 @@ Route::middleware('auth')->group(function () {
     
     Route::resource('profile/certifications', CertificationController::class);
     Route::resource('posts/posts', PostController::class);
+    
+    // Route::resource('posts/likes',likeController::class);
+    // Route::post('/posts/{postId}/like', [likeController::class, 'toggleLike'])->name('posts.like');
+    // Route::get('/posts/{postId}/check-like', [likeController::class, 'checkLike'])->name('posts.like');
+
+    Route::post('/posts/{post}/like', [likeController::class, 'toggleLike'])->name('posts.like');
+    Route::get('/posts/{post}/check-like', [likeController::class, 'checkLike'])->name('posts.checkLike');
     
     
 });
