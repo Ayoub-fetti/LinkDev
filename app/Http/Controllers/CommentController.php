@@ -4,13 +4,20 @@ namespace App\Http\Controllers;
 
 use App\Models\Comments;
 use App\Models\Posts;
+use App\Models\User;
 use Illuminate\Http\Request;
+use App\Notifications\CommentPost;
+use App\Notifications\CommentNofication;
 use Illuminate\Support\Facades\Auth;
 
 class CommentController extends Controller
 {
     public function store(Request $request, $postId)
     {
+        
+        // $user = User::find(Auth::id()); 
+        // $user->notify(new TestNofication());
+        // dd($user->unreadNotifications);
         $request->validate([
             'content' => 'required|string|max:255',
         ]);
@@ -24,6 +31,8 @@ class CommentController extends Controller
         $comment->date_commentaire = now();
         $comment->save();
 
+       $post->user->notify(new CommentNofication($post));
+   
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
     public function destroy($commentId)

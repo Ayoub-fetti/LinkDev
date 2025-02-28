@@ -27,7 +27,9 @@
             @foreach ($notifications as $notification)
                 <div class="border-b pb-4 mb-4">
                     @if($notification->type === 'App\Notifications\PostLiked')
-                        <p class="text-gray-800"><span class="font-semibold">{{ $notification->data['message'] }}</span> on your post.</p>
+                        <p class="text-gray-800 bg-blue-100 p-2 rounded"><span class="font-semibold">{{ $notification->data['message'] }}</span></p>
+                    @elseif($notification->type === 'App\Notifications\CommentNofication')
+                        <p class="text-gray-800 bg-green-100 p-2 rounded"><span class="font-semibold">{{ $notification->data['message'] }}</span></p>
                     @else
                         <p class="text-gray-800">{{ $notification->data['message'] }}</p>
                     @endif
