@@ -33,7 +33,7 @@
                             <button onclick="toggleCommentSection({{ $post->id }})" class="flex items-center hover:text-blue-600">
                                 <i class="far fa-comment text-blue-500 mr-1"></i> Comment <span class="ml-2" id="comment-count-{{ $post->id}}">({{ $post->comments->count() }})</span>
                             </button>
-                            <button onclick="sharePost({{ $post->id }})" class="flex items-center hover:text-green-500">
+                            <button onclick="sharePost({{ $post->id }})" class="flex items-center hover:text-green-500" data-post-id="{{$post->id}}">
                                 <i class="fas fa-share text-green-500 mr-1"></i> Share
                             </button>
                             @if (Auth::id() === $post->user_id)
