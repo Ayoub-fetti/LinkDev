@@ -12,7 +12,7 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PostLikedNotification extends Mailable
+class PostCommentedNotification extends Mailable
 {
     use Queueable, SerializesModels;
 
@@ -33,7 +33,7 @@ class PostLikedNotification extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Someone Liked Your Post',
+            subject: 'Someone Commented Your Post',
         );
     }
 
@@ -43,7 +43,11 @@ class PostLikedNotification extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'email.post-liked',
+            view: 'emails.post-comment',
+            with: [
+                'commenter' => $this->user,
+                'post' => $this->post,
+            ]
         );
     }
 

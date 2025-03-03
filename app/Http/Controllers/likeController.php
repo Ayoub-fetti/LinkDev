@@ -25,6 +25,7 @@ class likeController extends Controller
                 'user_id' => Auth::id()
             ]);
             $isLiked = true;
+            // Mail::to($post->user->email)->send(new PostLikedNotification(Auth::user(), $post));
             $post->user->notify(new PostLiked($post));
         }
         

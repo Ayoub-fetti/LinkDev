@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PostCommentedNotification;
+
 use App\Models\Comments;
 use App\Models\Posts;
 use App\Models\User;
@@ -15,9 +18,7 @@ class CommentController extends Controller
     public function store(Request $request, $postId)
     {
         
-        // $user = User::find(Auth::id()); 
-        // $user->notify(new TestNofication());
-        // dd($user->unreadNotifications);
+ 
         $request->validate([
             'content' => 'required|string|max:255',
         ]);
@@ -32,6 +33,7 @@ class CommentController extends Controller
         $comment->save();
 
        $post->user->notify(new CommentNofication($post));
+       Mail::to(Auth::user()->email)->send(new PostCommentedNotification(Auth::user(), $post));
    
         return redirect()->back()->with('success', 'Comment added successfully.');
     }
