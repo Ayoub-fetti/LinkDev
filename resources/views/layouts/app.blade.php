@@ -71,6 +71,9 @@
             }
         </script>
         
+
+
+        {{-- fonction pour like  --}}
     <script>
         document.addEventListener('DOMContentLoaded', function() {
                     document.querySelectorAll('.like-button').forEach(button => {
@@ -125,27 +128,52 @@
             }
         }
     </script>
-    <script>
-         function sharePost(postId) {
-        const post = document.querySelector(`.post[data-post-id="${postId}"]`);
-        const postContent = post.querySelector('.post-content').textContent;
-        const postUrl = window.location.href + `#post-${postId}`;
 
-        if (navigator.share) {
-            navigator.share({
-                title: 'Check out this post!',
-                text: postContent,
-                url: postUrl
-            }).then(() => {
-                console.log('Post shared successfully');
-            }).catch((error) => {
-                console.error('Error sharing post:', error);
-            });
-        } else {
-            alert('Web Share API is not supported in your browser.');
-        }
-    }
+  {{-- fonction pour partager un post  --}}
+    <script>
+                    function sharePost(postId) {
+                    const post = document.querySelector(`.post[data-post-id="${postId}"]`);
+                    const postContent = post.querySelector('.post-content').textContent;
+                    const postUrl = window.location.href + `#post-${postId}`;
+
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Check out this post!',
+                            text: postContent,
+                            url: postUrl
+                        }).then(() => {
+                            console.log('Post shared successfully');
+                        }).catch((error) => {
+                            console.error('Error sharing post:', error);
+                        });
+                    } else {
+                        alert('Web Share API is not supported in your browser.');
+                    }
+                }
     </script>
+
+            {{-- fonction pour recherche input --}}
+        <script>
+            document.getElementById('searchInput').addEventListener('keyup', function() {
+                const searchValue = this.value.toLowerCase();
+                const posts = document.querySelectorAll('.post'); // Use correct CSS selector with period
+                
+                posts.forEach(post => {
+                    const postContent = post.querySelector('.post-content').textContent.toLowerCase();
+                    const userName = post.querySelector('h4').textContent.toLowerCase();
+                    const hashtags = post.querySelector('p.text-blue-800')?.textContent.toLowerCase() || '';
+                    
+                    // Search in content, username, and hashtags
+                    if (postContent.includes(searchValue) || 
+                        userName.includes(searchValue) || 
+                        hashtags.includes(searchValue)) {
+                        post.style.display = '';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            });
+        </script>
         @livewireScripts
     </body>
 </html>

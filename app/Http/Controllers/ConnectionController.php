@@ -17,7 +17,7 @@ class ConnectionController extends Controller
          ->where('status', 'pending')
         ->get();
         
-        $posts = Posts::paginate(5);
+        $posts = Posts::all();
 
 
         return view('dashboard', compact('receivedConnections','posts'));

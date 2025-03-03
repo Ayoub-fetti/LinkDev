@@ -2,7 +2,7 @@
     <div class="container mx-auto mt-10 flex justify-center">
         <div class="w-full max-w-xl">
             <div>
-                <input type="text" wire:model="search" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
+                <input type="text" id="searchInput" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
                 @foreach($posts as $post)
                     <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6 post" data-post-id="{{ $post->id }}">
                         <div class="flex items-center mb-2">
@@ -84,10 +84,11 @@
                 @endforeach
             </div>
             <!-- Add pagination links -->
-            <div class="mt-4">
+            {{-- <div class="mt-4">
                 {{ $posts->links() }}
-            </div>
+            </div> --}}
         </div>
     </div>
+
 
 </x-app-layout>
