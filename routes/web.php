@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\likeController;
+use App\Http\Controllers\NotificationController;
 use App\Models\Connections;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ConversationController;
@@ -55,6 +56,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
     Route::post('/conversations', [ConversationController::class, 'store'])->name('conversations.store');
     Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
+
+    Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])
+    ->name('notifications.markAsRead');
 
     
     

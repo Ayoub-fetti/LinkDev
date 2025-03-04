@@ -171,16 +171,8 @@
                             </div>
         
                             <!-- Boutons d'interaction -->
-                            <div class="flex items-center justify-between mt-3 text-gray-600">
-                                <button class="flex items-center hover:text-red-600">
-                                    <i class="far fa-heart text-red-500 mr-1"></i>Like
-                                </button>
-                                <button class="flex items-center hover:text-blue-600">
-                                    <i class="far fa-comment text-blue-500 mr-1"></i> Comment
-                                </button>
-                                <button class="flex items-center hover:text-green-500">
-                                    <i class="fas fa-share text-green-500 mr-1"></i> Share
-                                </button>
+                            <div class="flex items-center justify-center gap-6 mt-3 text-gray-600">
+
                                 <a href="{{route('posts.edit',$post->id) }}" class="flex items-center hover:text-orange-500">
                                     <i class="fas fa-pen text-orange-500 mr-1"></i> Edit
                                 </a>
