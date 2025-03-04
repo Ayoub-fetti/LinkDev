@@ -14,10 +14,15 @@ class ConversationController extends Controller
     use AuthorizesRequests;
     public function index()
     {
-
+        
+        $connectedUsers = User::where('id', '!=', auth()->id())
+            ->get()
+            ->filter(function($user) {
+                return auth()->user()->connectionStatus($user->id) === 'accepted';
+            });
 
         $conversations = Auth::user()->conversations;
-        return view('conversations.index', compact('conversations'));
+        return view('conversations.index', compact('conversations','connectedUsers'));
     }
 
     public function show(Conversation $conversation)

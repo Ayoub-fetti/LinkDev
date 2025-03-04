@@ -10,16 +10,23 @@
                     @foreach($conversations as $conversation)
                         <a href="{{ route('conversations.show', $conversation) }}" class="block p-4 border rounded-lg hover:bg-gray-50">
                             <div class="flex items-center justify-between">
-                                <div>
+                                <div class="flex items-center">
                                     @php
                                         $otherUser = $conversation->users->where('id', '!=', auth()->id())->first();
                                     @endphp
-                                    <h4 class="font-medium">
-                                        {{ $otherUser ? $otherUser->name : 'Group Conversation' }}
-                                    </h4>
-                                    <p class="text-sm text-gray-500 truncate">
-                                        {{ $conversation->lastMessage ? $conversation->lastMessage->body : 'Start a conversation' }}
-                                    </p>
+                                    <div class="flex-shrink-0">
+                                        <img src="{{ asset('storage/' . $otherUser->profile_picture) }}" 
+                                             class="h-12 w-12 rounded-full object-cover border-2 border-gray-200" 
+                                             alt="{{ $otherUser->name }}'s profile picture">
+                                    </div>
+                                    <div class="ml-4">
+                                        <h4 class="font-medium text-gray-900">
+                                            {{ $otherUser ? $otherUser->name : 'Group Conversation' }}
+                                        </h4>
+                                        <p class="text-sm text-gray-500 truncate">
+                                            {{ $conversation->lastMessage ? $conversation->lastMessage->body : 'Start a conversation' }}
+                                        </p>
+                                    </div>
                                 </div>
                                 <div class="flex flex-col items-end">
                                     <span class="text-xs text-gray-500">
@@ -48,7 +55,8 @@
                         <label for="user_id" class="block text-sm font-medium text-gray-700">Select User</label>
                         <select name="user_id" id="user_id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm" required>
                             <option value="">Select a user</option>
-                            @foreach(\App\Models\User::where('id', '!=', auth()->id())->get() as $user)
+
+                            @foreach($connectedUsers as $user)
                                 <option value="{{ $user->id }}">{{ $user->name }}</option>
                             @endforeach
                         </select>
