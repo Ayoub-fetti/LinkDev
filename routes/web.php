@@ -8,6 +8,7 @@ use App\Http\Controllers\CommentController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\likeController;
+use App\Http\Controllers\JobController;
 use App\Http\Controllers\NotificationController;
 use App\Models\Connections;
 use Illuminate\Support\Facades\Route;
@@ -49,17 +50,18 @@ Route::middleware('auth')->group(function () {
     
     Route::post('/posts/{post}/like', [likeController::class, 'toggleLike'])->name('posts.like');
     Route::get('/posts/{post}/check-like', [likeController::class, 'checkLike'])->name('posts.checkLike');
-
-
-
+    
+    
+    
     Route::get('/conversations', [ConversationController::class, 'index'])->name('conversations.index');
     Route::get('/conversations/{conversation}', [ConversationController::class, 'show'])->name('conversations.show');
     Route::post('/conversations', [ConversationController::class, 'store'])->name('conversations.store');
     Route::post('/conversations/{conversation}/messages', [MessageController::class, 'store'])->name('messages.store');
-
+    
     Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])
     ->name('notifications.markAsRead');
-
+    
+    Route::resource('posts/Job_offers', JobController::class);
     
     
 });

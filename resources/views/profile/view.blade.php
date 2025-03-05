@@ -53,7 +53,7 @@
                 <!-- Projects Section -->
                 <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
                     <div class="p-6">
-                        <h3 class="text-xl font-bold mb-1">Projects <span></span></h3>
+                        <h3 class="text-xl font-bold mb-1">Your Projects <span></span></h3>
                         <a href="{{ route('projects.create') }}" class=" text-green-500 rounded-lg hover:text-green-600 font-bold">Add Project</a>
                         <div class="mt-2">
                             @foreach($projects as $project)
@@ -115,7 +115,7 @@
         <!-- certifications Section -->
         <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="p-6">
-                <h3 class="text-xl font-bold mb-1">Certifications <span></span></h3>
+                <h3 class="text-xl font-bold mb-1"> Your Certifications <span></span></h3>
                 <a href="{{ route('certifications.create') }}" class=" text-green-500 rounded-lg hover:text-green-600 font-bold">Add Certifications</a>
                 <div class="mt-2">
                     @foreach($certifications as $certification)
@@ -135,13 +135,48 @@
             </div>
         </div>
     </div>
+    <div class="mt-2 mb-2 mr-20 ml-20 bg-white shadow-lg rounded-lg overflow-hidden">
+        <!-- Jobs Section -->
+        <div class="mt-2 mb-2 bg-white shadow-lg rounded-lg overflow-hidden">
+            <div class="p-6">
+                <h3 class="text-xl font-bold mb-1">Your Jobs <span></span></h3>
+                <a href="{{ route('Job_offers.create') }}" class=" text-green-500 rounded-lg hover:text-green-600 font-bold">Add Jobs</a>
+                <div class="mt-2">
+                    @foreach($job_offers as $job)
+                        <div class="mb-4">
+                            <h4 class="text-lg font-semibold">{{ $job->title }}</h4>
+                        <p class="text-gray-600">{{ $job->company_name }}</p>
+                        <p class="text-gray-500 text-xs">{{ $job->contract_type }} | {{ $job->location }}</p>
+                        {{-- <p class="text-gray-500 text-xs">Posted: {{ $job->date_published->format('Y-m-d') }}</p>  --}}
+                        <p class="text-gray-500 text-xs">Posted: {{ \Carbon\Carbon::parse($job->date_published)->format('Y-m-d') }}</p> 
+                        <p class="mt-2">{{ $job->description }}</p>
+                        @if($job->offer_link)
+                            <a href="{{ $job->offer_link }}" target="_blank" class="text-blue-500 hover:underline">Apply Now</a>
+                        @endif
+                        </div>
+                        <div class="flex gap-3 ml-2">
+                            <form action="{{ route('Job_offers.destroy', $job->id) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this offer?');">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit"><i class="fas fa-trash-alt text-red-500"></i></button>
+                            </form>
+                            <form action="{{ route('Job_offers.edit', $job->id) }}" method="GET">
+                                @csrf
+                                <button type="submit"><i class="fas fa-pen text-orange-500"></i></button>
+                            </form>
+                        </div>
+                    @endforeach
+                </div>
+            </div>
+        </div>
+    </div>
 
     
     <div class="mt-2 mb-2 mr-20 ml-20 bg-white shadow-lg rounded-lg overflow-hidden">
         <!--posts Section -->
         <div class="mt-4 mb-4 bg-white shadow-lg rounded-lg overflow-hidden">
             <div class="p-6">
-                <h3 class="text-xl font-bold mb-4">Mes Posts</h3>
+                <h3 class="text-xl font-bold mb-4">Your Posts</h3>
                 <a href="{{ route('posts.create') }}" class="text-green-500 hover:text-green-600 font-bold">➕ Ajouter un Post</a>
                 
                 <div class="mt-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

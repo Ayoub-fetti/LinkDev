@@ -156,7 +156,7 @@
         <script>
             document.getElementById('searchInput').addEventListener('keyup', function() {
                 const searchValue = this.value.toLowerCase();
-                const posts = document.querySelectorAll('.post'); // Use correct CSS selector with period
+                const posts = document.querySelectorAll('.post'); 
                 
                 posts.forEach(post => {
                     const postContent = post.querySelector('.post-content').textContent.toLowerCase();

@@ -82,6 +82,7 @@ class User extends Authenticatable
         return $this->hasMany(Shares::class);
     
     }
+
     public function job_offers()
     {
         return $this->hasMany(Job_offers::class);

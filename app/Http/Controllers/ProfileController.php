@@ -25,7 +25,8 @@ class ProfileController extends Controller
         $projects = Auth::user()->projects;
         $certifications = Auth::user()->certifications;
         $posts = Auth::user()->posts;
-        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications','posts'));
+        $job_offers = Auth::user()->job_offers;
+        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications','posts','job_offers'));
 
     }
     public function notification()

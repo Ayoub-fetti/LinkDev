@@ -21,6 +21,7 @@
                         </div>
                     </div>
                 @endforeach
+                
             </div>
             
             <form action="{{ route('messages.store', $conversation) }}" method="POST" id="message-form">
