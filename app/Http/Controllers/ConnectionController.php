@@ -18,9 +18,10 @@ class ConnectionController extends Controller
         ->get();
         
         $posts = Posts::all();
+        $users = User::where('id', '!=', Auth::id())->get();
 
 
-        return view('dashboard', compact('receivedConnections','posts'));
+        return view('dashboard', compact('receivedConnections','posts','users'));
     }
     public function sendRequest(Request $request)
     {

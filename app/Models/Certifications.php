@@ -14,4 +14,8 @@ class Certifications extends Model
     {
         return $this->belongsTo(User::class);
     }
-}
+    public function certifications()
+    {
+        return $this->hasMany(Certifications::class);
+    }
+} 

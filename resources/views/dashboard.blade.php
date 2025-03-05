@@ -1,7 +1,9 @@
 <x-app-layout>
     <div class="container mx-auto mt-10 flex justify-center">
-        <div class="w-full max-w-xl">
-            <div>
+        <!-- Main content with posts and user sidebar -->
+        <div class="flex w-full justify-center max-w-6xl gap-6">
+            <!-- Left side - Posts column -->
+            <div class="w-2/3">
                 <input type="text" id="searchInput" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
                 @foreach($posts as $post)
                     <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6 post" data-post-id="{{ $post->id }}">
@@ -83,12 +85,48 @@
                     </div>
                 @endforeach
             </div>
-            <!-- Add pagination links -->
-            {{-- <div class="mt-4">
-                {{ $posts->links() }}
-            </div> --}}
+            
+            <!-- Right side - Users column -->
+            <div class="w-1/3">
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">People you may know</h3>
+                    <div class="space-y-4">
+                        @foreach ($users as $user)
+                            @if($user->id != Auth::id())
+                                <div class="p-4 border-b flex items-center">
+                                    <img class="w-10 h-10 rounded-full" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                                    <div class="ml-3">
+                                        <h4 class="text-base font-semibold">{{ $user->name }}</h4>
+                                    </div>
+                                    <div class="ml-auto">
+                                        @php
+                                            $connectionStatus = auth()->user()->connectionStatus($user->id);
+                                        @endphp
+                                        @if($connectionStatus == 'pending')
+                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-yellow-500 to-orange-500 group-hover:from-yellow-500 group-hover:to-orange-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-yellow-200 dark:focus:ring-yellow-800" disabled>
+                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                            Pending
+                                            </span>
+                                        @elseif($connectionStatus == 'accepted')
+                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-500 to-teal-500 group-hover:from-green-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800" disabled>
+                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                            Connected
+                                            </span>
+                                        </button>
+                                        @else
+                                            <form action="{{ route('connections.send')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="target_user_id" value="{{ $user->id }}">
+                                                <button class="bg-blue-500 text-white px-4 py-1 rounded-lg">+ Connect</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
 </x-app-layout>
