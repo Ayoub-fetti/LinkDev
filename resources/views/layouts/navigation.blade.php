@@ -17,11 +17,6 @@
                     </x-nav-link>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('profile.view')" :active="request()->routeIs('profile.view')">
-                        {{ __('Profil') }}
-                    </x-nav-link>
-                </div>
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('my.notification')" :active="request()->routeIs('my.notification')">
                         {{ __('Notifications') }}
                         @if(auth()->user()->unreadNotifications->count() > 0)
@@ -34,6 +29,11 @@
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     <x-nav-link :href="route('conversations.index')" :active="request()->routeIs('conversations.index')">
                         {{ __('conversations') }}
+                    </x-nav-link>
+                </div>
+                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                    <x-nav-link :href="route('profile.view')" :active="request()->routeIs('profile.view')">
+                        {{ __('Profil') }}
                     </x-nav-link>
                 </div>
             </div>
