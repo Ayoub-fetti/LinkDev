@@ -126,6 +126,36 @@
                         @endforeach
                     </div>
                 </div>
+                
+                <!-- Jobs section -->
+                <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">Latest Jobs</h3>
+                    <div class="space-y-4">
+                        @forelse ($jobs ?? [] as $job)
+                            <div class="p-3 border rounded hover:bg-gray-50 transition">
+                                <h4 class="text-base font-semibold">{{ $job->title }}</h4>
+                                <div class="text-sm text-gray-600 my-1">{{ $job->company }}</div>
+                                <div class="flex items-center text-xs text-gray-500 mb-2">
+                                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    {{ $job->location }}
+                                </div>
+                                <p class="text-xs text-gray-600 line-clamp-2">{{ Str::limit($job->description, 100) }}</p>
+                                <div class="mt-2 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">Posted {{ $job->created_at->diffForHumans() }}</span>
+                                    <a href="{{ $job->offer_link }}" target="_blank" class="text-blue-500 hover:underline">View details</a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-3 text-center text-gray-500">
+                                No jobs available at the moment.
+                            </div>
+                        @endforelse
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>

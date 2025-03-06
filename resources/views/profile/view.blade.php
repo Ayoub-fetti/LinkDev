@@ -151,7 +151,7 @@
                         <p class="text-gray-500 text-xs">Posted: {{ \Carbon\Carbon::parse($job->date_published)->format('Y-m-d') }}</p> 
                         <p class="mt-2">{{ $job->description }}</p>
                         @if($job->offer_link)
-                            <a href="{{ $job->offer_link }}" target="_blank" class="text-blue-500 hover:underline">Apply Now</a>
+                            <a href="{{ $job->offer_link }}" target="_blank" class="text-blue-500 hover:underline">View details</a>
                         @endif
                         </div>
                         <div class="flex gap-3 ml-2">
