@@ -18,7 +18,7 @@ class ConnectionController extends Controller
         ->get();
         
         $posts = Posts::all();
-        $users = User::where('id', '!=', Auth::id())->get();
+        $users = User::where('id', '!=', Auth::id())->get()->sortBy('created_at');
 
 
         return view('dashboard', compact('receivedConnections','posts','users'));
