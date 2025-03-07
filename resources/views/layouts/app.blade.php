@@ -70,6 +70,110 @@
                 commentSection.classList.toggle('hidden');
             }
         </script>
+        
+
+
+        {{-- fonction pour like  --}}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+                    document.querySelectorAll('.like-button').forEach(button => {
+                        const postId = button.dataset.postId;
+                        checkLikeStatus(postId);
+                    });
+                });
+                async function toggleLike(postId) {
+    try {
+        const response = await fetch(`/posts/${postId}/like`, {
+            method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
+                'Accept': 'application/json'
+            }
+        });
+        
+        const data = await response.json();
+        console.log(data);
+        if (data.success) {
+            const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+            const icon = button.querySelector('.like-icon');
+            const count = button.querySelector('.likes-count');
+            
+            // Update like count
+            count.textContent = data.likesCount;
+            
+            // Update icon state
+            if (data.isLiked) {
+                icon.style.fill = 'currentColor';
+            } else {
+                icon.style.fill = 'none';
+            }
+        }
+    } catch (error) {
+        console.error('Error toggling like:', error);
+    }
+}
+        async function checkLikeStatus(postId) {
+            try {
+                const response = await fetch(`/posts/${postId}/check-like`);
+                const data = await response.json();
+                
+                const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
+                const icon = button.querySelector('.like-icon');
+                
+                if (data.isLiked) {
+                    icon.style.fill = 'currentColor';
+                }
+            } catch (error) {
+                console.error('Error checking like status:', error);
+            }
+        }
+    </script>
+
+  {{-- fonction pour partager un post  --}}
+    <script>
+                    function sharePost(postId) {
+                    const post = document.querySelector(`.post[data-post-id="${postId}"]`);
+                    const postContent = post.querySelector('.post-content').textContent;
+                    const postUrl = window.location.href + `#post-${postId}`;
+
+                    if (navigator.share) {
+                        navigator.share({
+                            title: 'Check out this post!',
+                            text: postContent,
+                            url: postUrl
+                        }).then(() => {
+                            console.log('Post shared successfully');
+                        }).catch((error) => {
+                            console.error('Error sharing post:', error);
+                        });
+                    } else {
+                        alert('Web Share API is not supported in your browser.');
+                    }
+                }
+    </script>
+
+            {{-- fonction pour recherche input --}}
+        <script>
+            document.getElementById('searchInput').addEventListener('keyup', function() {
+                const searchValue = this.value.toLowerCase();
+                const posts = document.querySelectorAll('.post'); 
+                
+                posts.forEach(post => {
+                    const postContent = post.querySelector('.post-content').textContent.toLowerCase();
+                    const userName = post.querySelector('h4').textContent.toLowerCase();
+                    const hashtags = post.querySelector('p.text-blue-800')?.textContent.toLowerCase() || '';
+                    
+                    // Search in content, username, and hashtags
+                    if (postContent.includes(searchValue) || 
+                        userName.includes(searchValue) || 
+                        hashtags.includes(searchValue)) {
+                        post.style.display = '';
+                    } else {
+                        post.style.display = 'none';
+                    }
+                });
+            });
+        </script>
         @livewireScripts
     </body>
 </html>

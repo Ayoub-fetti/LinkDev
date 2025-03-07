@@ -11,6 +11,8 @@ use App\Models\Hashtags;
 use App\Models\Connections;
 use App\Models\Project;
 use App\Models\Certifications;
+use App\Models\Conversation;
+use App\Models\Message;
 
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
@@ -80,6 +82,7 @@ class User extends Authenticatable
         return $this->hasMany(Shares::class);
     
     }
+
     public function job_offers()
     {
         return $this->hasMany(Job_offers::class);
@@ -105,7 +108,7 @@ class User extends Authenticatable
     }
 
     public function connectionStatus($targetUserId)
-{
+    {
     $connection = Connections::where(function ($query) use ($targetUserId) {
         $query->where('source_user_id', $this->id)
               ->where('target_user_id', $targetUserId);
@@ -115,7 +118,19 @@ class User extends Authenticatable
     })->first();
 
     return $connection ? $connection->status : null;
-}
+    }
+
+    public function conversations()
+    {
+        return $this->belongsToMany(Conversation::class, 'conversation_user')
+            ->withPivot('last_read_at')
+            ->withTimestamps()
+            ->orderBy('updated_at', 'desc');
+    }
     
+    public function messages()
+    {
+        return $this->hasMany(Message::class);
+    }
    
 }

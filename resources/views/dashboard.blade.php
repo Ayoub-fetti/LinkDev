@@ -1,10 +1,12 @@
 <x-app-layout>
     <div class="container mx-auto mt-10 flex justify-center">
-        <div class="w-full max-w-xl">
-            <div>
-                <input type="text" wire:model="search" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
+        <!-- Main content with posts and user sidebar -->
+        <div class="flex w-full justify-center max-w-6xl gap-6">
+            <!-- Left side - Posts column -->
+            <div class="w-2/3">
+                <input type="text" id="searchInput" placeholder="Search posts..." class="w-full p-2 mb-4 border rounded">
                 @foreach($posts as $post)
-                    <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6">
+                    <div class="bg-white p-4 rounded-lg shadow-md flex flex-col justify-between mb-6 post" data-post-id="{{ $post->id }}">
                         <div class="flex items-center mb-2">
                             <img src="{{ asset('storage/' . $post->user->profile_picture) }}" alt="Avatar" class="w-10 h-10 rounded-full mr-3">
                             <div>
@@ -12,7 +14,7 @@
                                 <p class="text-sm text-gray-500">{{ $post->created_at->diffForHumans() }}</p>
                             </div>
                         </div>
-                        <p class="text-gray-800 text-sm">{{ $post->content }}</p>
+                        <p class="text-gray-800 text-sm post-content">{{ $post->content }}</p>
                         <p class="text-blue-800 text-xs">
                             @foreach($post->hashtags as $hashtag)
                                 {{ $hashtag->name }}
@@ -21,15 +23,10 @@
                         @if($post->image)
                             <img src="{{ asset('storage/' . $post->image) }}" alt="Post Image" class="w-full h-auto mt-2 rounded-lg">
                         @endif
-                        <div class="flex items-center justify-between mt-3 text-gray-600 text-sm " >
-     
-                            <button onclick="toggleLike({{ $post->id }})"
-                                class="like-button flex items-center space-x-2 hover:text-blue-600"
-                                data-post-id="{{ $post->id }}">
-                                <svg class="h-5 w-5 like-icon" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        <div class="flex items-center justify-between mt-3 text-gray-600 text-sm">
+                            <button onclick="toggleLike({{ $post->id }})" class="like-button flex items-center space-x-2 hover:text-blue-600" data-post-id="{{ $post->id }}">
+                                <svg class="h-5 w-5 like-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                                 </svg>
                                 <span class="likes-count">{{ $post->likes->count() }}</span>
                                 <span>likes</span>
@@ -38,7 +35,7 @@
                             <button onclick="toggleCommentSection({{ $post->id }})" class="flex items-center hover:text-blue-600">
                                 <i class="far fa-comment text-blue-500 mr-1"></i> Comment <span class="ml-2" id="comment-count-{{ $post->id}}">({{ $post->comments->count() }})</span>
                             </button>
-                            <button class="flex items-center hover:text-green-500">
+                            <button onclick="sharePost({{ $post->id }})" class="flex items-center hover:text-green-500" data-post-id="{{$post->id}}">
                                 <i class="fas fa-share text-green-500 mr-1"></i> Share
                             </button>
                             @if (Auth::id() === $post->user_id)
@@ -88,71 +85,78 @@
                     </div>
                 @endforeach
             </div>
-            <!-- Add pagination links -->
-            <div class="mt-4">
-                {{ $posts->links() }}
+            
+            <!-- Right side - Users column -->
+            <div class="w-1/3">
+                <div class="bg-white p-4 rounded-lg shadow-md">
+                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">People you may know</h3>
+                    <div class="space-y-4">
+                        @foreach ($users as $user)
+                            @if($user->id != Auth::id())
+                                <div class="p-4 border-b flex items-center">
+                                    <img class="w-10 h-10 rounded-full" src="{{ asset('storage/' . $user->profile_picture) }}" alt="Profile Picture">
+                                    <div class="ml-3">
+                                        <h4 class="text-base font-semibold">{{ $user->name }}</h4>
+                                    </div>
+                                    <div class="ml-auto">
+                                        @php
+                                            $connectionStatus = auth()->user()->connectionStatus($user->id);
+                                        @endphp
+                                        @if($connectionStatus == 'pending')
+                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-yellow-500 to-orange-500 group-hover:from-yellow-500 group-hover:to-orange-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-yellow-200 dark:focus:ring-yellow-800" disabled>
+                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                            Pending
+                                            </span>
+                                        @elseif($connectionStatus == 'accepted')
+                                        <button class="relative inline-flex items-center justify-center p-0.5 mb-2 me-2 overflow-hidden text-sm font-medium text-gray-900 rounded-lg group bg-gradient-to-br from-green-500 to-teal-500 group-hover:from-green-500 group-hover:to-teal-500 hover:text-white dark:text-white focus:ring-4 focus:outline-none focus:ring-green-200 dark:focus:ring-green-800" disabled>
+                                            <span class="relative px-2 transition-all ease-in duration-75 bg-white dark:bg-gray-900 rounded-md group-hover:bg-transparent group-hover:dark:bg-transparent">
+                                            Connected
+                                            </span>
+                                        </button>
+                                        @else
+                                            <form action="{{ route('connections.send')}}" method="post">
+                                                @csrf
+                                                <input type="hidden" name="target_user_id" value="{{ $user->id }}">
+                                                <button class="bg-blue-500 text-white px-4 py-1 rounded-lg">+ Connect</button>
+                                            </form>
+                                        @endif
+                                    </div>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                </div>
+                
+                <!-- Jobs section -->
+                <div class="bg-white p-4 rounded-lg shadow-md mt-5">
+                    <h3 class="text-lg font-semibold mb-4 border-b pb-2">Latest Jobs</h3>
+                    <div class="space-y-4">
+                        @forelse ($jobs ?? [] as $job)
+                            <div class="p-3 border rounded hover:bg-gray-50 transition">
+                                <h4 class="text-base font-semibold">{{ $job->title }}</h4>
+                                <div class="text-sm text-gray-600 my-1">{{ $job->company }}</div>
+                                <div class="flex items-center text-xs text-gray-500 mb-2">
+                                    <svg class="h-4 w-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"></path>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    </svg>
+                                    {{ $job->location }}
+                                </div>
+                                <p class="text-xs text-gray-600 line-clamp-2">{{ Str::limit($job->description, 100) }}</p>
+                                <div class="mt-2 flex justify-between items-center">
+                                    <span class="text-xs text-gray-500">Posted {{ $job->created_at->diffForHumans() }}</span>
+                                    <a href="{{ $job->offer_link }}" target="_blank" class="text-blue-500 hover:underline">View details</a>
+                                </div>
+                            </div>
+                        @empty
+                            <div class="p-3 text-center text-gray-500">
+                                No jobs available at the moment.
+                            </div>
+                        @endforelse
+                        
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-                    document.querySelectorAll('.like-button').forEach(button => {
-                        const postId = button.dataset.postId;
-                        checkLikeStatus(postId);
-                    });
-                });
-                async function toggleLike(postId) {
-    try {
-        const response = await fetch(`/posts/${postId}/like`, {
-            method: 'POST',
-            headers: {
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content,
-                'Accept': 'application/json'
-            }
-        });
-        
-        const data = await response.json();
-        console.log(data);
-        if (data.success) {
-            const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
-            const icon = button.querySelector('.like-icon');
-            const count = button.querySelector('.likes-count');
-            
-            // Update like count
-            count.textContent = data.likesCount;
-            
-            // Update icon state
-            if (data.isLiked) {
-                icon.style.fill = 'currentColor';
-            } else {
-                icon.style.fill = 'none';
-            }
-        }
-    } catch (error) {
-        console.error('Error toggling like:', error);
-    }
-}
-        async function checkLikeStatus(postId) {
-            try {
-                const response = await fetch(`/posts/${postId}/check-like`);
-                const data = await response.json();
-                
-                const button = document.querySelector(`.like-button[data-post-id="${postId}"]`);
-                const icon = button.querySelector('.like-icon');
-                
-                if (data.isLiked) {
-                    icon.style.fill = 'currentColor';
-                }
-            } catch (error) {
-                console.error('Error checking like status:', error);
-            }
-        }
-    </script>
-    <script>
-                function toggleCommentSection(postId) {
-            const commentSection = document.getElementById(`comment-section-${postId}`);
-            commentSection.classList.toggle('hidden');
-        }
-    </script>
 </x-app-layout>

@@ -33,4 +33,6 @@ class CertificationController extends Controller
             $certification->delete();
             return redirect()->route('profile.view')->with('success', 'Certification deleted successfully');
         }
+        
+
 }

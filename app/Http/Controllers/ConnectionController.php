@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Connections;
+use App\Models\Job_offers;
 use App\Models\Posts;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -17,10 +18,12 @@ class ConnectionController extends Controller
          ->where('status', 'pending')
         ->get();
         
-        $posts = Posts::paginate(5);
+        $posts = Posts::all();
+        $users = User::where('id', '!=', Auth::id())->get()->sortBy('created_at');
+        $jobs =  Job_offers::all();
 
 
-        return view('dashboard', compact('receivedConnections','posts'));
+        return view('dashboard', compact('receivedConnections','posts','users','jobs'));
     }
     public function sendRequest(Request $request)
     {

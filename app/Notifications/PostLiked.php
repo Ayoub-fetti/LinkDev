@@ -6,6 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Support\Facades\Auth;
 
 class PostLiked extends Notification
 {
@@ -49,9 +50,11 @@ class PostLiked extends Notification
     public function toArray(object $notifiable): array
     {
         return [
-            'message' => 'Your Post was liked.',
+            'message' => Auth::user()->name . ' liked your post "' . $this->post->title . '"',
             'post_id' => $this->post->id,
-            'post_title' => $this->post->title,
+            'user_image' => Auth::user()->profile_picture,
+            'user_id' => Auth::user()->id
+            
         ];
     }
 }

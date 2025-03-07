@@ -21,11 +21,12 @@ class ProfileController extends Controller
         $user = Auth::user();
         $sent_connections = $user->sentConnections->get('target_user_id');
         $received_connections = $user->receivedConnections->get('source_user_id');
-        $users = User::where('id', '!=', Auth::id())->get();
+        $users = User::where('id', '!=', Auth::id())->get()->sortBy('created_at');
         $projects = Auth::user()->projects;
         $certifications = Auth::user()->certifications;
         $posts = Auth::user()->posts;
-        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications','posts'));
+        $job_offers = Auth::user()->job_offers;
+        return view('profile.view', compact('user','users','sent_connections','received_connections','projects','certifications','posts','job_offers'));
 
     }
     public function notification()

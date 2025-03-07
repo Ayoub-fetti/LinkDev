@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PostLikedNotification;
+use Illuminate\Support\Facades\Mail;
 use App\Models\likes;
 use App\Models\Posts;
 use Illuminate\Http\Request;
