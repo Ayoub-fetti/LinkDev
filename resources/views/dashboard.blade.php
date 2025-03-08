@@ -17,7 +17,7 @@
                         <p class="text-gray-800 text-sm post-content">{{ $post->content }}</p>
                         <p class="text-blue-800 text-xs">
                             @foreach($post->hashtags as $hashtag)
-                                {{ $hashtag->name }}
+                                #{{ $hashtag->name }}
                             @endforeach
                         </p>
                         @if($post->image)

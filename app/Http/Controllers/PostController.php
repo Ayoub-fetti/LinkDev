@@ -112,7 +112,7 @@ public function update(Request $request, $id)
 
     $post->hashtags()->attach($hashtags);
 
-    return redirect()->route('profile.view')->with('success', 'Post updated successfully.');
+    return redirect()->route('dashboard')->with('success', 'Post updated successfully.');
 }
     
    
